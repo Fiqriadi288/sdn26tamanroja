@@ -1,0 +1,1448 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDN 26 TAMANROJA - Sekolah Dasar Negeri Unggulan</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #1f2937;
+            overflow-x: hidden;
+            background: #ffffff;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2.5rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .school-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #2563eb;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            width: 100%;
+            min-height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.92) 0%, rgba(37, 99, 235, 0.88) 50%, rgba(59, 130, 246, 0.85) 100%);
+            z-index: 1;
+        }
+
+        .hero-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-logo {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 2.5rem;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.3));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.35rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #1e40af;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: #f0f9ff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2.5px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #2563eb;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 3;
+        }
+
+        .slider-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .slider-dot:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            width: 100%;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px);
+        }
+
+        .stats-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        /* Content Section */
+        .content-section {
+            width: 100%;
+            padding: 5rem 2rem;
+            background: #f9fafb;
+        }
+
+        .section-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-subtitle {
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-description {
+            font-size: 1.15rem;
+            color: #6b7280;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* About Cards */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .about-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .about-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+        }
+
+        .about-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .card-text {
+            color: #6b7280;
+            line-height: 1.8;
+        }
+
+        /* Principal Section */
+        .principal-section {
+            width: 100%;
+            padding: 5rem 2rem;
+            background: white;
+        }
+
+        .principal-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .principal-image-container {
+            position: relative;
+        }
+
+        .principal-photo {
+            width: 100%;
+            max-width: 350px;
+            aspect-ratio: 3/4;
+            border-radius: 24px;
+            object-fit: cover;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 6px solid white;
+            position: relative;
+            z-index: 1;
+            display: block;
+        }
+
+        .principal-photo-placeholder {
+            width: 100%;
+            max-width: 350px;
+            aspect-ratio: 1;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 6px solid white;
+        }
+
+        .photo-decoration {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            border-radius: 24px;
+            z-index: 0;
+            opacity: 0.2;
+        }
+
+        .principal-content {
+            padding: 2rem 0;
+        }
+
+        .principal-badge {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .principal-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .principal-position {
+            color: #6b7280;
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .principal-text {
+            color: #4b5563;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .principal-signature {
+            margin-top: 2rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        /* Facilities Section */
+        .facilities-section {
+            width: 100%;
+            padding: 5rem 2rem;
+            background: #f9fafb;
+        }
+
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .facility-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .facility-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+        }
+
+        .facility-image-wrapper {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .facility-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .facility-card:hover .facility-image {
+            transform: scale(1.1);
+        }
+
+        .facility-icon-wrapper {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .facility-icon-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 15s linear infinite;
+        }
+
+        .facility-body {
+            padding: 2rem;
+        }
+
+        .facility-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.8rem;
+        }
+
+        .facility-description {
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        /* Achievements Section */
+        .achievements-section {
+            width: 100%;
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievements-section .section-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .achievements-section .section-title {
+            color: white;
+        }
+
+        .achievements-section .section-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .achievement-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .achievement-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.8rem;
+        }
+
+        .achievement-subtitle {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            width: 100%;
+            padding: 5rem 2rem;
+            background: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+        }
+
+        .contact-info-wrapper {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            padding: 3rem;
+            border-radius: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .contact-info-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-item-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            opacity: 0.9;
+        }
+
+        .contact-item-content h4 {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-item-content p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .contact-form-wrapper {
+            background: #f9fafb;
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .form-message {
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            border-radius: 12px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .form-message.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 2px solid #86efac;
+        }
+
+        /* Map Section */
+        .map-section {
+            width: 100%;
+            padding: 5rem 2rem;
+            background: #f9fafb;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 500px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 6px solid white;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Footer */
+        .footer {
+            width: 100%;
+            background: #1e293b;
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            object-fit: contain;
+        }
+
+        .footer-school-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tagline {
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icon {
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-4px);
+        }
+
+        .footer-copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .principal-wrapper {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .principal-photo,
+            .principal-photo-placeholder {
+                margin: 0 auto;
+            }
+
+            .photo-decoration {
+                display: none;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body><!-- Navbar -->
+  <nav class="navbar" id="navbar">
+   <div class="nav-container">
+    <div class="logo-section"><img src="https://i.ibb.co.com/vvd5VhB0/Logo-Sekolah-Dasar-Logo-SD.png" alt="Logo SDN 26 Tamanroja" class="logo-img" onerror="this.style.display='none';">
+     <div class="school-title" id="navbar-school-name">
+      SDN 26 TAMANROJA
+     </div>
+    </div>
+    <ul class="nav-menu">
+     <li><a href="#tentang">Tentang</a></li>
+     <li><a href="#kepala-sekolah">Kepala Sekolah</a></li>
+     <li><a href="#fasilitas">Fasilitas</a></li>
+     <li><a href="#prestasi">Prestasi</a></li>
+     <li><a href="#kontak">Kontak</a></li>
+    </ul>
+   </div>
+  </nav><!-- Hero Section -->
+  <section class="hero-section">
+   <div class="hero-slider">
+    <div class="hero-slide active"><img src="https://i.ibb.co.com/gLRsq4pj/Whats-App-Image-2025-11-26-at-12-48-13-b2ecf70a.jpg" alt="SDN 26 Tamanroja" onerror="this.style.display='none';">
+    </div>
+    <div class="hero-slide"><img src="https://i.imgur.com/GwvZpMO.jpeg" alt="Gedung Sekolah" onerror="this.style.display='none';">
+    </div>
+    <div class="hero-slide"><img src="https://i.imgur.com/GsDpjaE.jpeg" alt="Kegiatan Sekolah" onerror="this.style.display='none';">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-pattern"></div>
+   </div>
+   <div class="hero-content"><img src="https://i.ibb.co.com/vvd5VhB0/Logo-Sekolah-Dasar-Logo-SD.png" alt="Logo SDN 26 Tamanroja" class="hero-logo" onerror="this.style.display='none';">
+    <div class="hero-badge">
+     🏫 Sekolah Dasar Negeri Unggulan
+    </div>
+    <h1 class="hero-title" id="hero-title">Membentuk Generasi Unggul dan Berkarakter</h1>
+    <p class="hero-subtitle" id="hero-subtitle">Pendidikan Berkualitas untuk Masa Depan Gemilang</p>
+    <div class="hero-buttons"><a href="#kontak" class="btn btn-primary" id="btn-register"> <span>📝</span> <span id="cta-register">Daftar Sekarang</span> </a> <a href="#tentang" class="btn btn-outline" id="btn-info"> <span>ℹ️</span> <span id="cta-info">Info Lebih Lanjut</span> </a>
+    </div>
+   </div>
+   <div class="slider-controls"><span class="slider-dot active" onclick="changeSlide(0)"></span> <span class="slider-dot" onclick="changeSlide(1)"></span> <span class="slider-dot" onclick="changeSlide(2)"></span>
+   </div>
+  </section><!-- Stats Section -->
+  <section class="stats-section">
+   <div class="stats-pattern"></div>
+   <div class="stats-container">
+    <div class="stat-card">
+     <div class="stat-number">
+      35+
+     </div>
+     <div class="stat-label">
+      Tahun Pengalaman
+     </div>
+    </div>
+    <div class="stat-card">
+     <div class="stat-number">
+      500+
+     </div>
+     <div class="stat-label">
+      Siswa Aktif
+     </div>
+    </div>
+    <div class="stat-card">
+     <div class="stat-number">
+      30+
+     </div>
+     <div class="stat-label">
+      Guru Profesional
+     </div>
+    </div>
+    <div class="stat-card">
+     <div class="stat-number">
+      50+
+     </div>
+     <div class="stat-label">
+      Prestasi Diraih
+     </div>
+    </div>
+   </div>
+  </section><!-- About Section -->
+  <section class="content-section" id="tentang">
+   <div class="section-container">
+    <div class="section-header">
+     <div class="section-subtitle">
+      TENTANG KAMI
+     </div>
+     <h2 class="section-title" id="about-title">Kenali Lebih Dekat SDN 26 Tamanroja</h2>
+     <p class="section-description">Sekolah dengan pengalaman lebih dari 35 tahun dalam membentuk generasi yang cerdas, berkarakter, dan berprestasi</p>
+    </div>
+    <div class="about-grid">
+     <div class="about-card"><span class="card-icon">📚</span>
+      <h3 class="card-title">Sejarah &amp; Tradisi</h3>
+      <p class="card-text">Berdiri sejak 1985, SDN 26 Tamanroja telah menjadi institusi pendidikan terkemuka dengan dedikasi menghasilkan ribuan alumni berprestasi yang berkontribusi bagi masyarakat dan bangsa.</p>
+     </div>
+     <div class="about-card"><span class="card-icon">🎯</span>
+      <h3 class="card-title">Visi Kami</h3>
+      <p class="card-text">Menjadi sekolah dasar unggulan yang mengintegrasikan prestasi akademik dengan pembentukan karakter mulia, berbudaya Indonesia, dan siap menghadapi tantangan masa depan.</p>
+     </div>
+     <div class="about-card"><span class="card-icon">🚀</span>
+      <h3 class="card-title">Misi Kami</h3>
+      <p class="card-text">Menyelenggarakan pendidikan berkualitas dengan pembelajaran inovatif, mengembangkan potensi siswa secara optimal, dan menanamkan nilai-nilai luhur bangsa.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Principal Section -->
+  <section class="principal-section" id="kepala-sekolah">
+   <div class="section-container">
+    <div class="principal-wrapper">
+     <div class="principal-image-container"><img src="https://i.imgur.com/kl5pmIp.jpeg" alt="Hj. Hamsina S, S.Pd" class="principal-photo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'principal-photo-placeholder\'>👩‍🏫</div><div class=\'photo-decoration\'></div>';">
+      <div class="photo-decoration"></div>
+     </div>
+     <div class="principal-content">
+      <div class="principal-badge">
+       Sambutan Kepala Sekolah
+      </div>
+      <h2 class="principal-name" id="principal-name">Hj. Hamsina S, S.Pd</h2>
+      <p class="principal-position">Kepala Sekolah SDN 26 Tamanroja</p>
+      <p class="principal-text">Assalamu'alaikum warahmatullahi wabarakatuh,</p>
+      <p class="principal-text">Selamat datang di website resmi SDN 26 Tamanroja. Dengan bangga kami mempersembahkan institusi pendidikan yang berkomitmen penuh untuk memberikan pengalaman belajar terbaik bagi putra-putri Anda.</p>
+      <p class="principal-text">Didukung oleh tenaga pendidik profesional dan berdedikasi, fasilitas modern yang memadai, serta kurikulum yang terintegrasi dengan pembentukan karakter, kami siap membimbing setiap siswa menjadi generasi yang cerdas, berakhlak mulia, dan memiliki daya saing tinggi di era global.</p>
+      <p class="principal-text">Mari bersama-sama kita wujudkan masa depan gemilang bagi generasi penerus bangsa. Terima kasih atas kepercayaan yang telah diberikan kepada SDN 26 Tamanroja.</p>
+      <p class="principal-signature">Wassalamu'alaikum warahmatullahi wabarakatuh</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Facilities Section -->
+  <section class="facilities-section" id="fasilitas">
+   <div class="section-container">
+    <div class="section-header">
+     <div class="section-subtitle">
+      FASILITAS
+     </div>
+     <h2 class="section-title" id="facilities-title">Fasilitas Unggulan</h2>
+     <p class="section-description">Sarana dan prasarana modern untuk mendukung proses pembelajaran yang optimal dan pengembangan potensi siswa</p>
+    </div>
+    <div class="facilities-grid">
+     <div class="facility-card">
+      <div class="facility-image-wrapper"><img src="https://i.ibb.co.com/dwXydtWM/Whats-App-Image-2025-11-26-at-12-48-14-e58fbe4e.jpg" alt="Perpustakaan" class="facility-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'facility-icon-wrapper\'>📚</div>';">
+      </div>
+      <div class="facility-body">
+       <h3 class="facility-name">Perpustakaan Digital</h3>
+       <p class="facility-description">Koleksi lebih dari 5.000 buku dengan ruang baca yang nyaman, sistem perpustakaan digital, dan akses internet untuk mendukung literasi siswa.</p>
+      </div>
+     </div>
+     <div class="facility-card">
+      <div class="facility-image-wrapper"><img src="https://i.ibb.co.com/WpYVLS4R/Whats-App-Image-2025-11-26-at-16-55-55-dace6c3e.jpg" alt="Masjid" class="facility-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'facility-icon-wrapper\'>🕌</div>';">
+      </div>
+      <div class="facility-body">
+       <h3 class="facility-name">Masjid Sekolah</h3>
+       <p class="facility-description">Tempat ibadah yang luas dan nyaman untuk kegiatan keagamaan, sholat berjamaah, dan pembinaan spiritual siswa secara berkelanjutan.</p>
+      </div>
+     </div>
+     <div class="facility-card">
+      <div class="facility-image-wrapper"><img src="https://i.ibb.co.com/4Z2p59Tr/Whats-App-Image-2025-11-26-at-16-59-24-714244bc.jpg" alt="Ruang Kelas Modern" class="facility-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'facility-icon-wrapper\'>🏫</div>';">
+      </div>
+      <div class="facility-body">
+       <h3 class="facility-name">Ruang Kelas Modern</h3>
+       <p class="facility-description">Ruang kelas ber-AC dengan fasilitas multimedia, proyektor interaktif, dan penataan ergonomis untuk pembelajaran yang efektif dan menyenangkan.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Achievements Section -->
+  <section class="achievements-section" id="prestasi">
+   <div class="section-container">
+    <div class="section-header">
+     <div class="section-subtitle">
+      PRESTASI
+     </div>
+     <h2 class="section-title" id="achievements-title">Prestasi Membanggakan</h2>
+     <p class="section-description">Berbagai pencapaian luar biasa yang telah diraih oleh siswa-siswi SDN 26 Tamanroja</p>
+    </div>
+    <div class="achievements-grid">
+     <div class="achievement-card">
+      <div class="achievement-icon">
+       🥇
+      </div>
+      <h3 class="achievement-title">Juara 1 Olimpiade Sains</h3>
+      <p class="achievement-subtitle">Tingkat Provinsi 2024</p>
+     </div>
+     <div class="achievement-card">
+      <div class="achievement-icon">
+       🏆
+      </div>
+      <h3 class="achievement-title">Sekolah Adiwiyata Nasional</h3>
+      <p class="achievement-subtitle">Peduli Lingkungan 2024</p>
+     </div>
+     <div class="achievement-card">
+      <div class="achievement-icon">
+       🎖️
+      </div>
+      <h3 class="achievement-title">Juara Umum MTQ</h3>
+      <p class="achievement-subtitle">Tingkat Kecamatan</p>
+     </div>
+     <div class="achievement-card">
+      <div class="achievement-icon">
+       ⚽
+      </div>
+      <h3 class="achievement-title">Juara 2 Futsal</h3>
+      <p class="achievement-subtitle">Antar SD Se-Kabupaten</p>
+     </div>
+     <div class="achievement-card">
+      <div class="achievement-icon">
+       🎭
+      </div>
+      <h3 class="achievement-title">Juara 1 Tari Kreasi</h3>
+      <p class="achievement-subtitle">Festival Seni Budaya</p>
+     </div>
+     <div class="achievement-card">
+      <div class="achievement-icon">
+       📖
+      </div>
+      <h3 class="achievement-title">Literasi Terbaik</h3>
+      <p class="achievement-subtitle">Gerakan Literasi Sekolah</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Contact Section -->
+  <section class="contact-section" id="kontak">
+   <div class="section-container">
+    <div class="section-header">
+     <div class="section-subtitle">
+      HUBUNGI KAMI
+     </div>
+     <h2 class="section-title">Mari Bergabung Bersama Kami</h2>
+     <p class="section-description">Dapatkan informasi lengkap tentang pendaftaran dan program kami</p>
+    </div>
+    <div class="contact-grid">
+     <div class="contact-info-wrapper">
+      <h3 class="contact-info-title">Informasi Kontak</h3>
+      <div class="contact-item">
+       <div class="contact-item-icon">
+        📍
+       </div>
+       <div class="contact-item-content">
+        <h4>Alamat</h4>
+        <p>Jl. Tamanroja, Desa Batara<br>
+         Kec. Labakkang Kab Pangkep</p>
+       </div>
+      </div>
+      <div class="contact-item">
+       <div class="contact-item-icon">
+        📞
+       </div>
+       <div class="contact-item-content">
+        <h4>Telepon</h4>
+        <p>(021) 1234-5678<br>
+         0812-3456-7890</p>
+       </div>
+      </div>
+      <div class="contact-item">
+       <div class="contact-item-icon">
+        📧
+       </div>
+       <div class="contact-item-content">
+        <h4>Email</h4>
+        <p>info@sdn26tamanroja.sch.id<br>
+         admin@sdn26tamanroja.sch.id</p>
+       </div>
+      </div>
+      <div class="contact-item">
+       <div class="contact-item-icon">
+        ⏰
+       </div>
+       <div class="contact-item-content">
+        <h4>Jam Operasional</h4>
+        <p>Senin - Jumat: 07.00 - 15.00<br>
+         Sabtu: 07.00 - 12.00</p>
+       </div>
+      </div>
+     </div>
+     <div class="contact-form-wrapper">
+      <h3 class="form-title">Kirim Pesan</h3>
+      <form id="contactForm">
+       <div class="form-group"><label for="name" class="form-label">Nama Lengkap</label> <input type="text" id="name" class="form-input" required>
+       </div>
+       <div class="form-group"><label for="email" class="form-label">Alamat Email</label> <input type="email" id="email" class="form-input" required>
+       </div>
+       <div class="form-group"><label for="phone" class="form-label">Nomor Telepon</label> <input type="tel" id="phone" class="form-input" required>
+       </div>
+       <div class="form-group"><label for="message" class="form-label">Pesan Anda</label> <textarea id="message" class="form-textarea" required></textarea>
+       </div><button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;"> Kirim Pesan 📩 </button>
+      </form>
+      <div id="formMessage" class="form-message"></div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Map Section -->
+  <section class="map-section">
+   <div class="section-container">
+    <div class="section-header">
+     <div class="section-subtitle">
+      LOKASI
+     </div>
+     <h2 class="section-title">Kunjungi Kami</h2>
+     <p class="section-description">Temukan lokasi SDN 26 Tamanroja dengan mudah melalui peta di bawah ini</p>
+    </div>
+    <div class="map-wrapper"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.287662558849!2d119.37883807475943!3d-5.212013994764547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dbee3ef3e28b961%3A0x9e4f8f8f8f8f8f8f!2sSDN%2026%20Tamanroja!5e0!3m2!1sen!2sid!4v1234567890" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="footer">
+   <div class="footer-content"><img src="https://i.ibb.co.com/vvd5VhB0/Logo-Sekolah-Dasar-Logo-SD.png" alt="Logo SDN 26 Tamanroja" class="footer-logo" onerror="this.style.display='none';">
+    <div class="footer-school-name">
+     SDN 26 TAMANROJA
+    </div>
+    <p class="footer-tagline">Membentuk Generasi Unggul dan Berkarakter</p>
+    <div class="footer-social"><span class="social-icon">📘</span> <span class="social-icon">📷</span> <span class="social-icon">🐦</span> <span class="social-icon">▶️</span>
+    </div>
+    <p class="footer-copyright">© 2025 SDN 26 Tamanroja. Semua Hak Dilindungi.</p>
+   </div>
+  </footer>
+  <script>
+        const defaultConfig = {
+            school_name: "SDN 26 TAMANROJA",
+            hero_title: "Membentuk Generasi Unggul dan Berkarakter",
+            hero_subtitle: "Pendidikan Berkualitas untuk Masa Depan Gemilang",
+            about_title: "Kenali Lebih Dekat SDN 26 Tamanroja",
+            principal_name: "Hj. Hamsina S, S.Pd",
+            facilities_title: "Fasilitas Unggulan",
+            achievements_title: "Prestasi Membanggakan",
+            cta_register: "Daftar Sekarang",
+            cta_info: "Info Lebih Lanjut",
+            primary_color: "#1e3a8a",
+            secondary_color: "#2563eb",
+            accent_color: "#3b82f6",
+            text_color: "#1f2937",
+            background_color: "#ffffff",
+            font_family: "Inter",
+            font_size: 16
+        };
+
+        async function onConfigChange(config) {
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseFontStack = '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif';
+            const fullFontFamily = `${customFont}, ${baseFontStack}`;
+            const baseSize = config.font_size || defaultConfig.font_size;
+
+            document.body.style.fontFamily = fullFontFamily;
+            document.body.style.fontSize = `${baseSize}px`;
+
+            document.getElementById('navbar-school-name').textContent = config.school_name || defaultConfig.school_name;
+            document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+            document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+            document.getElementById('about-title').textContent = config.about_title || defaultConfig.about_title;
+            document.getElementById('principal-name').textContent = config.principal_name || defaultConfig.principal_name;
+            document.getElementById('facilities-title').textContent = config.facilities_title || defaultConfig.facilities_title;
+            document.getElementById('achievements-title').textContent = config.achievements_title || defaultConfig.achievements_title;
+            document.getElementById('cta-register').textContent = config.cta_register || defaultConfig.cta_register;
+            document.getElementById('cta-info').textContent = config.cta_info || defaultConfig.cta_info;
+
+            const primaryColor = config.primary_color || defaultConfig.primary_color;
+            const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+            const accentColor = config.accent_color || defaultConfig.accent_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+
+            document.body.style.backgroundColor = backgroundColor;
+            document.body.style.color = textColor;
+
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                .school-title { background: linear-gradient(135deg, ${secondaryColor} 0%, ${primaryColor} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+                .section-subtitle { color: ${secondaryColor}; }
+                .section-title, .card-title, .facility-name, .principal-name, .form-title { color: ${primaryColor}; }
+                .hero-section { background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%); }
+                .stats-section, .achievements-section { background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%); }
+                .contact-info-wrapper { background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%); }
+                .about-card::before { background: linear-gradient(90deg, ${secondaryColor}, ${accentColor}); }
+                .facility-icon-wrapper { background: linear-gradient(135deg, ${secondaryColor} 0%, ${accentColor} 100%); }
+                .photo-decoration { background: linear-gradient(135deg, ${accentColor} 0%, ${secondaryColor} 100%); }
+                .principal-badge { background: ${backgroundColor}; color: ${secondaryColor}; }
+                .btn-primary { background: ${backgroundColor}; color: ${primaryColor}; }
+                .btn-primary:hover { background: ${backgroundColor}; }
+                .form-input:focus, .form-textarea:focus { border-color: ${secondaryColor}; box-shadow: 0 0 0 4px ${secondaryColor}33; }
+                .nav-menu a:hover { color: ${secondaryColor}; }
+                .nav-menu a::after { background: linear-gradient(90deg, ${secondaryColor}, ${accentColor}); }
+            `;
+            document.head.appendChild(styleSheet);
+
+            document.querySelector('.hero-title').style.fontSize = `${baseSize * 2.2}px`;
+            document.querySelector('.hero-subtitle').style.fontSize = `${baseSize * 1.35}px`;
+            document.querySelectorAll('.section-title').forEach(el => el.style.fontSize = `${baseSize * 1.75}px`);
+            document.querySelectorAll('.card-title, .facility-name, .achievement-title').forEach(el => el.style.fontSize = `${baseSize * 1.5}px`);
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+                        { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } },
+                        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+                        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+                        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } }
+                    ],
+                    borderables: [],
+                    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+                    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ["school_name", config.school_name || defaultConfig.school_name],
+                    ["hero_title", config.hero_title || defaultConfig.hero_title],
+                    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+                    ["about_title", config.about_title || defaultConfig.about_title],
+                    ["principal_name", config.principal_name || defaultConfig.principal_name],
+                    ["facilities_title", config.facilities_title || defaultConfig.facilities_title],
+                    ["achievements_title", config.achievements_title || defaultConfig.achievements_title],
+                    ["cta_register", config.cta_register || defaultConfig.cta_register],
+                    ["cta_info", config.cta_info || defaultConfig.cta_info]
+                ])
+            });
+        }
+
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slider-dot');
+
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            showSlide(currentSlideIndex);
+        }
+
+        function changeSlide(index) {
+            currentSlideIndex = index;
+            showSlide(currentSlideIndex);
+        }
+
+        setInterval(nextSlide, 5000);
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = document.getElementById('formMessage');
+            message.style.display = 'block';
+            message.className = 'form-message success';
+            message.textContent = '✅ Pesan Anda telah berhasil dikirim! Tim kami akan menghubungi Anda segera.';
+            this.reset();
+            setTimeout(() => { message.style.display = 'none'; }, 5000);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a483ace45496021',t:'MTc2NDE0Nzk4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
